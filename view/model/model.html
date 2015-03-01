@@ -1,0 +1,100 @@
+<div ng-controller="ForumManageController">
+    <div class="row">
+        <div class="col-md-10">
+            <section class="widget">
+                <div class="body">
+					<div class="row table-top-control">
+						<div class="col-md-6 per-page-selector">
+							<a class="btn btn-warning" role="button" href="{{backUrl}}">
+                                返回
+                            </a>
+							<a class="btn btn-warning" role="button" ng-click="create()">
+								<i class="fa fa-plus"></i>
+								新增
+							</a>
+						</div>
+					</div>
+                    <div class="row">
+                        <div class="col-md-8 per-page-selector sub-tab">
+                            <span class='{{type == 1 ? "active" : ""}}'><a
+                                    href="#/matrix?type=1">类型1</a></span> |
+                            <span class='{{type == 2 ? "active" : ""}}'><a
+                                    href="#/matrix?type=2">类型2</a></span> |
+                            <span class='{{type == 3 ? "active" : ""}}'><a
+                                    href="#/matrix?type=3">类型3</a></span>{{type}}
+                        </div>
+                        <div class="col-md-4 form-group">
+                            <div class="form-inline">
+                                <input type="text" ng-model="searchForumName" class="form-control"
+                                       placeholder="根据关键字进行搜索"/>
+                                <button ng-click="search()" class="btn btn-sm btn-primary">搜索</button>
+                            </div>
+                        </div>
+                    </div>
+                    <table class="table table-striped no-margin">
+                        <thead>
+                        <tr>
+                            <th>吧名</th>
+                            <th style="width:80px;">所属二级目录</th>
+                            <th style="width:80px;">所属一级目录</th>
+                            <th>广告位状态</th>
+                            <th style="width:80px;">归属状态</th>
+                            <th style="width:140px;">操作</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr ng-repeat="item in forumManageList.list track by $index" class="{{item.type != null?'forum_disable':''}}">
+                            <td>{{item.forumName}}{{$parent.selectValue}}</td>
+                            <td>
+                                <a href="#/forum_manage?firstCatalogName={{item.firstCatalogName|encode}}&secondCatalogName={{item.secondCatalogName |encode}}">{{item.secondCatalogName
+                                    }}</a></td>
+                            <td><a href="#/second_catalog_list?firstCatalogName={{item.firstCatalogName|encode}}">{{item.firstCatalogName}}</a>
+                            </td>
+                            <td>{{getAdStatus(item.adSwitch)}}</td>
+                            <td>{{item.status == 0 ? '产品中心' : '运营中心'}}</td>
+                            <td ng-show='item.type == ""'>
+                                <button ng-disabled="item.status == 0" ng-click="edit(item)"
+                                        class="btn btn-sm btn-primary">广告开关
+                                </button>
+                                <button ng-show="item.status == 0" ng-click="online(item,1)"
+                                        class="btn btn-sm btn-warning">上线
+                                </button>
+                                <button ng-show="item.status == 1" ng-click="online(item,0)"
+                                        class="btn btn-sm btn-warning">下线
+                                </button>
+                            </td>
+                            <td ng-show='item.type != ""'>
+                                {{getForumType(item)}}
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <div class="row table-bottom-control">
+                        <div class="col-md-12 pull-right">
+                            <div class="dataTables_paginate paging_bootstrap">
+                                <pagination
+                                        ng-show="forumManageList.page.total_pn > 1"
+                                        page="forumManageList.page.page_num"
+                                        items-per-page="1"
+                                        total-items="forumManageList.page.total_pn"
+                                        on-select-page="changePage(page)"
+
+                                        boundary-links="true"
+                                        previous-text="&lsaquo;"
+                                        next-text="&rsaquo;"
+                                        first-text="&laquo;"
+                                        last-text="&raquo;"
+                                        max-size="20"
+                                        rotate="false"
+                                        >
+                                </pagination>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+
+    <ng-include src="editDialogUrl"></ng-include>
+</div>

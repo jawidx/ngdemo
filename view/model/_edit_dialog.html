@@ -1,0 +1,134 @@
+<modal ng-show="editing.model">
+    <form name="modelForm" class="form-horizontal label-left" novalidate>
+        <modal-header ng-show="!editing.model.id">
+            新建对象
+        </modal-header>
+        <modal-header ng-show="editing.model.id">
+            编辑对象
+        </modal-header>
+
+        <modal-body>
+            <div class="control-group">
+                <label class="control-label">
+                    字符串
+                    <span class="text-warning">*</span>
+                </label>
+
+                <div class="controls form-group">
+                    <input type="text"
+                           class="form-control"
+                           placeholder="请输入字符"
+                           ng-model="editing.model.name"
+                           ng-required="true" ng-maxlength="8">
+
+                    <div class="text-warning" ng-show="modelForm.name.$dirty && modelForm.name.$error.required">
+                        请输入字符
+                    </div>
+                    <div class="text-warning" ng-show="modelForm.name.$dirty && modelForm.name.$error.maxlength">
+                        超出最大长度：8
+                    </div>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label">
+                    数字
+                    <span class="text-warning">*</span>
+                </label>
+
+                <div class="controls form-group">
+                    <input type="number"
+                           class="form-control"
+                           ng-model="editing.model.count"
+                           ng-required="true">
+
+                    <div class="text-warning"  ng-show="modelForm.count.$dirty && modelForm.count.$error.required">
+                        请输入数字
+                    </div>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label">
+                    下拉框
+                    <span class="text-warning">*</span>
+                </label>
+
+                <div class="controls form-group">
+                    <select class="form-control" ng-model="editing.model.select">
+                        <option value="1" selected>1</option>
+                        <option value="2">2</option>
+                    </select>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label">
+                    数组{{editing.model.array.json('; ')}}
+                    <span class="text-warning">*</span>
+                </label>
+
+                <div class="controls form-group" ng-repeat="item in editing.model.array">
+                    <input type="text"
+                           ng-model="item"
+                           class="form-control"
+                           placeholder="请输入字符串"
+                           ng-required="true" ng-maxlength="14">
+                </div>
+            </div>
+
+            <div class="control-group">
+                <label class="control-label">
+                    多开关
+                    <span class="text-warning">*</span>
+                </label>
+
+                <div class="controls form-group">
+                    <div class="col-sm-3">
+                        <div class="checkbox">
+                            <label>
+                                <input type="checkbox"
+                                       ng-checked="editing.model.array1[0]==1"
+                                       ng-model="editing.model.array1[0]"
+                                       ng-true-value="1"
+                                       ng-false-value="0"/>PC
+                            </label>
+                        </div>
+                    </div>
+                    <div class="col-sm-3">
+                        <div class="checkbox">
+                            <label>
+                                <input type="checkbox"
+                                       ng-checked="editing.model.array1[1]==1"
+                                       ng-model="editing.model.array1[1]"
+                                       ng-true-value="1"
+                                       ng-false-value="0"/>客户端
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label">
+                    布尔
+                </label>
+
+                <div class="controls form-group">
+                    <div class="checkbox">
+                        <label>
+                            <input type="checkbox"
+                                   ng-checked="editing.model.bool==1"
+                                   ng-model="editing.model.bool"
+                                   ng-true-value="1"
+                                   ng-false-value="0"
+                                   ng-change="change(this, editing.name,editing.number)">{{editing.name}}
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </modal-body>
+
+        <modal-footer>
+            <button class="btn btn-success" ng-click="save(true)" ng-disabled="modelForm.$invalid">发布</button>
+            <button class="btn btn-success" ng-click="save(false)" ng-disabled="modelForm.$invalid">保存</button>
+            <button class="btn btn-default" ng-click="cancelEdit()">取消</button>
+        </modal-footer>
+    </form>
+</modal>
